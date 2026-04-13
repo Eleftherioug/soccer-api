@@ -15,6 +15,10 @@ const app = express();
 app.use(express.json());
 app.use(logger);
 
+app.get('/health', (req, res) => {
+  res.send('OK');
+});
+
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/teams', teamRoutes);

@@ -20,6 +20,22 @@ async function createCoachAndToken() {
   return loginResponse.body.token;
 }
 
+async function createPlayerAndToken() {
+  await User.scope('withPassword').create({
+    name: 'Player Test',
+    email: 'player@example.com',
+    password: await bcrypt.hash('password123', 10),
+    role: 'player',
+  });
+
+  const loginResponse = await request(app).post('/auth/login').send({
+    email: 'player@example.com',
+    password: 'password123',
+  });
+
+  return loginResponse.body.token;
+}
+
 describe('Team routes', () => {
   beforeEach(async () => {
     await setupDatabase({ force: true });
@@ -61,5 +77,20 @@ describe('Team routes', () => {
 
     expect(response.status).toBe(401);
     expect(response.body.error).toBeDefined();
+  });
+
+  test('role restrictions return 403 for non-coach team creation', async () => {
+    const token = await createPlayerAndToken();
+
+    const response = await request(app)
+      .post('/teams')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        team_name: 'Forbidden Team',
+        league_name: 'Forbidden League',
+      });
+
+    expect(response.status).toBe(403);
+    expect(response.body.error).toBe('Forbidden');
   });
 });

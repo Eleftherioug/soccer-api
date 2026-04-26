@@ -86,7 +86,7 @@ router.put('/:id', authMiddleware, roleMiddleware(['coach', 'manager']), async (
   }
 });
 
-router.delete('/:id', authMiddleware, roleMiddleware(['coach']), async (req, res, next) => {
+router.delete('/:id', authMiddleware, roleMiddleware(['coach', 'manager']), async (req, res, next) => {
   try {
     const match = await Match.findByPk(req.params.id);
     if (!match) {

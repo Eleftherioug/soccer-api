@@ -30,6 +30,7 @@ module.exports = (sequelize) =>
       role: {
         type: DataTypes.ENUM('player', 'coach', 'manager'),
         allowNull: false,
+        defaultValue: 'player',
       },
       TeamId: {
         type: DataTypes.INTEGER,

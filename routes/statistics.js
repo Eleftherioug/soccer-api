@@ -7,17 +7,13 @@ const router = express.Router();
 
 router.get('/', authMiddleware, async (req, res, next) => {
   try {
-    if (req.user.role === 'manager') {
-      return res.status(403).json({ error: 'Forbidden' });
-    }
-
     const where = req.user.role === 'player' ? { UserId: req.user.id } : {};
     const statistics = await PlayerStat.findAll({
       where,
       include: [
         {
           model: User,
-          attributes: ['id', 'name', 'email', 'role', 'TeamId'],
+          attributes: ['id', 'name'],
         },
         {
           model: Match,
@@ -33,7 +29,7 @@ router.get('/', authMiddleware, async (req, res, next) => {
   }
 });
 
-router.post('/', authMiddleware, roleMiddleware(['coach']), async (req, res, next) => {
+router.post('/', authMiddleware, roleMiddleware(['coach', 'manager']), async (req, res, next) => {
   try {
     const { goals, assists, minutes_played, yellow_cards, red_cards, UserId, MatchId } = req.body;
 

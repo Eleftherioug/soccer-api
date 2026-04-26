@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'name', 'email', 'role', 'TeamId'],
+          attributes: ['id', 'name'],
         },
         {
           model: Match,
@@ -27,7 +27,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', authMiddleware, roleMiddleware(['coach']), async (req, res, next) => {
+router.post('/', authMiddleware, roleMiddleware(['coach', 'manager']), async (req, res, next) => {
   try {
     const { team_name, league_name } = req.body;
 
@@ -42,7 +42,7 @@ router.post('/', authMiddleware, roleMiddleware(['coach']), async (req, res, nex
   }
 });
 
-router.put('/:id', authMiddleware, roleMiddleware(['coach']), async (req, res, next) => {
+router.put('/:id', authMiddleware, roleMiddleware(['coach', 'manager']), async (req, res, next) => {
   try {
     const team = await Team.findByPk(req.params.id);
     if (!team) {
@@ -61,7 +61,7 @@ router.put('/:id', authMiddleware, roleMiddleware(['coach']), async (req, res, n
   }
 });
 
-router.delete('/:id', authMiddleware, roleMiddleware(['coach']), async (req, res, next) => {
+router.delete('/:id', authMiddleware, roleMiddleware(['coach', 'manager']), async (req, res, next) => {
   try {
     const team = await Team.findByPk(req.params.id);
     if (!team) {

@@ -5,7 +5,7 @@ This project is an MVP REST API for managing soccer teams, users, matches, and p
 ## Setup Instructions
 
 1. Install dependencies with `npm install`.
-2. Create a `.env` file and optionally set `JWT_SECRET` and `DB_STORAGE`.
+2. Create a `.env` file and set `JWT_SECRET`. You can optionally set `DB_STORAGE`.
 3. Start the server with `npm start`.
 
 ## Seed Instructions
@@ -25,6 +25,7 @@ All seeded users use the password `password123`.
 - `POST /auth/register`
 - `POST /auth/login`
 - `GET /users`
+- `PATCH /users/:id/role`
 - `GET /teams`
 - `POST /teams`
 - `PUT /teams/:id`
@@ -42,6 +43,6 @@ Authentication uses JWT tokens. Log in through `POST /auth/login` and send the t
 
 ## Role-Based Access Explanation
 
-- `coach`: full control over teams and player statistics, and full match access
-- `manager`: can create and update matches
+- `coach`: can manage teams, matches, player statistics, and view users
+- `manager`: full admin access, including user role assignment
 - `player`: read-only access and can only view their own statistics

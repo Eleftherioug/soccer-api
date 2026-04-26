@@ -4,13 +4,14 @@ const { generateToken } = require('../auth/jwt');
 const { User } = require('../models');
 
 const router = express.Router();
+const DEFAULT_ROLE = 'player';
 
 router.post('/register', async (req, res, next) => {
   try {
-    const { name, email, password, role, TeamId } = req.body;
+    const { name, email, password, TeamId } = req.body;
 
-    if (!name || !email || !password || !role) {
-      return res.status(400).json({ error: 'name, email, password, and role are required' });
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'name, email, and password are required' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,7 +19,7 @@ router.post('/register', async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      role,
+      role: DEFAULT_ROLE,
       TeamId: TeamId || null,
     });
 

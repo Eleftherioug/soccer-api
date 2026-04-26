@@ -8,6 +8,30 @@ This project is an MVP REST API for managing soccer teams, users, matches, and p
 2. Create a `.env` file and set `JWT_SECRET`. You can optionally set `DB_STORAGE`.
 3. Start the server with `npm start`.
 
+## Deploying to Render
+
+1. Push this repo to GitHub.
+2. In Render, create a new `Web Service` from the GitHub repo.
+3. Use these settings:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Health Check Path: `/health`
+4. Add environment variables:
+   - `JWT_SECRET` = your production JWT secret
+   - `DB_STORAGE` = `/opt/render/project/src/data/soccer.sqlite`
+5. Add a persistent disk in Render and mount it at:
+   - `/opt/render/project/src/data`
+6. After the first deploy, open the Render Shell and run:
+   - `npm run db:seed`
+
+Included in this repo:
+- `render.yaml` for Render Blueprint setup
+
+Important:
+- This project uses SQLite, so persistent storage matters.
+- Render persistent disks require a paid web service plan. The included `render.yaml` uses `starter` for that reason.
+- The app now uses `process.env.PORT` automatically, which is required for Render web services.
+
 ## Seed Instructions
 
 Run `npm run db:seed` to recreate and seed the SQLite database with:

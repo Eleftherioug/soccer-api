@@ -13,7 +13,8 @@ This project is an MVP REST API for managing soccer teams, users, matches, and p
 1. Push this repo to GitHub.
 2. In Render, create a new `Web Service` from the GitHub repo.
 3. Use these settings:
-   - Build Command: `npm install`
+   - Node Version: `22`
+   - Build Command: `npm ci`
    - Start Command: `npm start`
    - Health Check Path: `/health`
 4. Add environment variables:

@@ -21,6 +21,9 @@
     "url": "https://github.com/Eleftherioug/soccer-api/issues"
   },
   "homepage": "https://github.com/Eleftherioug/soccer-api#readme",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",

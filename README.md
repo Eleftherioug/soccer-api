@@ -20,6 +20,12 @@ Run `npm run db:seed` to recreate and seed the SQLite database with:
 
 All seeded users use the password `password123`.
 
+Seeded demo accounts:
+- `coach@soccerapi.com`
+- `manager@soccerapi.com`
+- `player1@soccerapi.com`
+- `player2@soccerapi.com`
+
 ## API Endpoints
 
 - `POST /auth/register`

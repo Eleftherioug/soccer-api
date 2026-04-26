@@ -1,0 +1,562 @@
+{
+  "info": {
+    "_postman_id": "6d0dbf01-3fbe-4a7f-96aa-3ad1b544bd90",
+    "name": "Soccer Team Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "team_id",
+      "value": "1"
+    },
+    {
+      "key": "match_id",
+      "value": "1"
+    },
+    {
+      "key": "statistic_id",
+      "value": "1"
+    },
+    {
+      "key": "user_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Player Demo\",\n  \"email\": \"player-demo@test.com\",\n  \"password\": \"password123\",\n  \"TeamId\": 1\n}"
+            },
+            "url": "{{base_url}}/auth/register"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /auth/login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.token) {",
+                  "  pm.collectionVariables.set('token', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager@soccerapi.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /users/:id/role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"coach\"\n}"
+            },
+            "url": "{{base_url}}/users/{{user_id}}/role"
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /users/:id/role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"player\"\n}"
+            },
+            "url": "{{base_url}}/users/{{user_id}}/role"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Teams",
+      "item": [
+        {
+          "name": "GET /teams",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/teams"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /teams/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/teams/{{team_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /teams",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"team_name\": \"Chicago Strikers\",\n  \"league_name\": \"Midwest Premier League\"\n}"
+            },
+            "url": "{{base_url}}/teams"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /teams/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"team_name\": \"Chicago Strikers Updated\",\n  \"league_name\": \"Midwest Premier League\"\n}"
+            },
+            "url": "{{base_url}}/teams/{{team_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /teams/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/teams/{{team_id}}"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Matches",
+      "item": [
+        {
+          "name": "GET /matches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/matches"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /matches/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/matches/{{match_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /matches",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"opponent_name\": \"Lakeside FC\",\n  \"match_date\": \"2026-05-01\",\n  \"location\": \"Home Stadium\",\n  \"final_score\": \"2-1\",\n  \"TeamId\": 1\n}"
+            },
+            "url": "{{base_url}}/matches"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /matches/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"opponent_name\": \"Lakeside FC Updated\",\n  \"match_date\": \"2026-05-02\",\n  \"location\": \"Away Stadium\",\n  \"final_score\": \"3-1\",\n  \"TeamId\": 1\n}"
+            },
+            "url": "{{base_url}}/matches/{{match_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /matches/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/matches/{{match_id}}"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "GET /statistics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /statistics/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/statistics/{{statistic_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /statistics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"goals\": 2,\n  \"assists\": 1,\n  \"minutes_played\": 90,\n  \"yellow_cards\": 0,\n  \"red_cards\": 0,\n  \"UserId\": 1,\n  \"MatchId\": 1\n}"
+            },
+            "url": "{{base_url}}/statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /statistics/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"goals\": 3,\n  \"assists\": 1,\n  \"minutes_played\": 90,\n  \"yellow_cards\": 1,\n  \"red_cards\": 0,\n  \"UserId\": 1,\n  \"MatchId\": 1\n}"
+            },
+            "url": "{{base_url}}/statistics/{{statistic_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /statistics/:id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/statistics/{{statistic_id}}"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Errors",
+      "item": [
+        {
+          "name": "No Token - GET /statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Wrong Role - Player POST /teams",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"team_name\": \"Player Forbidden Team\",\n  \"league_name\": \"Blocked League\"\n}"
+            },
+            "url": "{{base_url}}/teams"
+          },
+          "response": []
+        },
+        {
+          "name": "Role Injection Attempt - POST /auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Injected User\",\n  \"email\": \"inject@test.com\",\n  \"password\": \"password123\",\n  \"role\": \"manager\"\n}"
+            },
+            "url": "{{base_url}}/auth/register"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Data - POST /auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"incomplete@test.com\"\n}"
+            },
+            "url": "{{base_url}}/auth/register"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

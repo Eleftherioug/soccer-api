@@ -1,4 +1,4 @@
-function roleMiddleware(allowedRoles) {
+function requireRole(allowedRoles) {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ error: 'Authentication required' });
@@ -12,4 +12,4 @@ function roleMiddleware(allowedRoles) {
   };
 }
 
-module.exports = roleMiddleware;
+module.exports = requireRole;

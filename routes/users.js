@@ -10,7 +10,6 @@ function serializeUser(user) {
   return {
     id: user.id,
     name: user.name,
-    email: user.email,
     role: user.role,
     TeamId: user.TeamId,
     Team: user.Team,
@@ -20,7 +19,7 @@ function serializeUser(user) {
 router.get('/', authMiddleware, roleMiddleware(['coach', 'manager']), async (req, res, next) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'name', 'email', 'role', 'TeamId'],
+      attributes: ['id', 'name', 'role', 'TeamId'],
       include: [
         {
           model: Team,
@@ -36,7 +35,7 @@ router.get('/', authMiddleware, roleMiddleware(['coach', 'manager']), async (req
   }
 });
 
-router.patch('/:id/role', authMiddleware, roleMiddleware(['manager']), async (req, res, next) => {
+async function updateUserRole(req, res, next) {
   try {
     const { role } = req.body;
 
@@ -63,6 +62,9 @@ router.patch('/:id/role', authMiddleware, roleMiddleware(['manager']), async (re
   } catch (error) {
     return next(error);
   }
-});
+}
+
+router.put('/:id/role', authMiddleware, roleMiddleware(['manager']), updateUserRole);
+router.patch('/:id/role', authMiddleware, roleMiddleware(['manager']), updateUserRole);
 
 module.exports = router;

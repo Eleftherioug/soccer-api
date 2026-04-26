@@ -65,9 +65,9 @@ describe('User routes', () => {
     const response = await request(app).get('/users').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body[0]).toHaveProperty('email');
     expect(response.body[0]).toHaveProperty('role');
     expect(response.body[0]).toHaveProperty('Team');
+    expect(response.body[0]).not.toHaveProperty('email');
     expect(response.body[0]).not.toHaveProperty('password');
   });
 
@@ -94,7 +94,7 @@ describe('User routes', () => {
     });
 
     const response = await request(app)
-      .patch(`/users/${player.id}/role`)
+      .put(`/users/${player.id}/role`)
       .set('Authorization', `Bearer ${managerToken}`)
       .send({ role: 'coach' });
 

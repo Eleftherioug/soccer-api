@@ -9,6 +9,27 @@ describe('Match routes', () => {
     await setupDatabase({ force: true });
   });
 
+  test('GET /matches/:id returns a match', async () => {
+    const team = await Team.create({
+      team_name: 'Match Team',
+      league_name: 'League One',
+    });
+
+    const match = await require('../models').Match.create({
+      opponent_name: 'Opponent FC',
+      match_date: '2026-05-01',
+      location: 'Away Ground',
+      final_score: '2-0',
+      TeamId: team.id,
+    });
+
+    const response = await request(app).get(`/matches/${match.id}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(match.id);
+    expect(response.body.opponent_name).toBe('Opponent FC');
+  });
+
   test('manager can create a match', async () => {
     const team = await Team.create({
       team_name: 'Match Team',

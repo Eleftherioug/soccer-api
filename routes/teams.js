@@ -4,24 +4,41 @@ const roleMiddleware = require('../middleware/role');
 const { Match, Team, User } = require('../models');
 
 const router = express.Router();
+const teamInclude = [
+  {
+    model: User,
+    attributes: ['id', 'name'],
+  },
+  {
+    model: Match,
+    attributes: ['id', 'opponent_name', 'match_date', 'location', 'final_score', 'TeamId'],
+  },
+];
 
 router.get('/', async (req, res, next) => {
   try {
     const teams = await Team.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['id', 'name'],
-        },
-        {
-          model: Match,
-          attributes: ['id', 'opponent_name', 'match_date', 'location', 'final_score', 'TeamId'],
-        },
-      ],
+      include: teamInclude,
       order: [['id', 'ASC']],
     });
 
     return res.json(teams);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const team = await Team.findByPk(req.params.id, {
+      include: teamInclude,
+    });
+
+    if (!team) {
+      return res.status(404).json({ error: 'Team not found' });
+    }
+
+    return res.json(team);
   } catch (error) {
     return next(error);
   }

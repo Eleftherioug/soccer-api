@@ -54,6 +54,16 @@ describe('Team routes', () => {
     expect(response.body[0].team_name).toBe('Existing Team');
   });
 
+  test('GET /teams/:id returns a team', async () => {
+    const team = await Team.findOne({ where: { team_name: 'Existing Team' } });
+
+    const response = await request(app).get(`/teams/${team.id}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(team.id);
+    expect(response.body.team_name).toBe('Existing Team');
+  });
+
   test('creating a team (coach only)', async () => {
     const token = await createCoachAndToken();
 

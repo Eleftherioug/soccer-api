@@ -25,17 +25,23 @@ All seeded users use the password `password123`.
 - `POST /auth/register`
 - `POST /auth/login`
 - `GET /users`
+- `PUT /users/:id/role`
 - `PATCH /users/:id/role`
 - `GET /teams`
+- `GET /teams/:id`
 - `POST /teams`
 - `PUT /teams/:id`
 - `DELETE /teams/:id`
 - `GET /matches`
+- `GET /matches/:id`
 - `POST /matches`
 - `PUT /matches/:id`
 - `DELETE /matches/:id`
 - `GET /statistics`
+- `GET /statistics/:id`
 - `POST /statistics`
+- `PUT /statistics/:id`
+- `DELETE /statistics/:id`
 
 ## Authentication Explanation
 
